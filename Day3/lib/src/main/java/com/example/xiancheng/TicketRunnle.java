@@ -13,7 +13,7 @@ public class TicketRunnle implements Runnable {
     public void run() {
         for (int i = 0; i < 20; i++) {
             if (this.ticket > 0) {
-                System.out.println("卖票：ticket" + this.ticket--);
+                System.out.println(Thread.currentThread().getName()+"卖票：ticket" + this.ticket--);
             }
 
         }

@@ -15,6 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".WelComeActivity" />
+        <activity android:name=".Ask" />
+        <activity android:name=".ViewPost" />
+        <activity android:name=".Seekbar"></activity>
     </application>
 
 </manifest>

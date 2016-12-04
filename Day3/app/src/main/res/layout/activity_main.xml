@@ -10,7 +10,19 @@
     tools:context="com.bwie.day3.MainActivity">
 
     <TextView
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_centerHorizontal="true"
+        android:text="准备" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="149dp"
+        android:onClick="kill"
+        android:text="准备" />
+
 </RelativeLayout>
