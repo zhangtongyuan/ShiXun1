@@ -4,15 +4,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,9 @@ public class ZhuCeActivity extends AppCompatActivity {
     private TextView zhuce_tv_next;
     private CheckBox zhuce_cb;
     private EditText zhuce_ed_phone;
+    private ImageView zuce_back;
+    private ImageView zuce_back1;
+    private ImageView zhuce_img_detele;
     //private boolean falg = true;
 
     @Override
@@ -37,20 +43,53 @@ public class ZhuCeActivity extends AppCompatActivity {
         initView();
         //设置协议
         setTvtongyi();
-        //设置checkboxj监听事件
-        // checkBox();
-        //判断输入的是否是手机号码如果是就往下执行不是就吐司
-        panDuan();
-
+        //下一步的点击事件
+        next();
     }
+
+    private void next() {
+        zhuce_ed_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == 0) {
+                    zhuce_tv_next.setBackgroundColor(Color.rgb(202, 202, 197));
+                    zhuce_img_detele.setVisibility(View.GONE);
+                    zhuce_tv_next.setClickable(false);
+                } else {
+                    zhuce_img_detele.setVisibility(View.VISIBLE);
+                    String phone = zhuce_ed_phone.getText().toString();
+                    int length = phone.length();
+                    if (length > 0) {
+                        zhuce_tv_next.setBackgroundColor(Color.rgb(251, 203, 61));
+                        zhuce_tv_next.setClickable(true);
+                //判断输入的是否是手机号码如果是就往下执行不是就吐司
+                        panDuan();
+
+
+                    }
+                }
+            }
+        });
+    }
+
 
     //判断手机号和登陆下一步按钮
     private void panDuan() {
         zhuce_tv_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phone = zhuce_ed_phone.getText().toString();
-                boolean judge = isMobile(phone);
+                String ed_phone = zhuce_ed_phone.getText().toString();
+                boolean judge = isMobile(ed_phone);
                 if (judge == true) {
                     boolean checked = zhuce_cb.isChecked();
 
@@ -96,6 +135,20 @@ public class ZhuCeActivity extends AppCompatActivity {
         zhuce_cb = (CheckBox) findViewById(R.id.zhuce_cb);
         zhuce_tv_next = (TextView) findViewById(R.id.zhuce_tv_next);
         zhuce_ed_phone = (EditText) findViewById(R.id.zhuce_ed_phone);
+        zuce_back = (ImageView) findViewById(R.id.zuce_back);
+        zuce_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        zhuce_img_detele = (ImageView) findViewById(R.id.zhuce_img_detele);
+        zhuce_img_detele.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zhuce_ed_phone.setText("");
+            }
+        });
     }
 
     /**

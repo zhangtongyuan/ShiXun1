@@ -11,18 +11,31 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bwie.um.imageloder.ImageLoaderUtils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * 作用: 登录界面
  * 作者: 张桐源
  * 日期: 2016/12/5
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText my_ed_password;
     private EditText my_ed_phonenumber;
@@ -35,11 +48,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView my_img_chear;
     private ImageView my_img_detele;
     private ImageView my_qq;
+    private ImageView back;
+    private ImageView my_fenxiang;
+    private ImageView my_img_weixin;
+    private ImageView my_img_qq;
+    private TextView my_tv_qq;
+    private DisplayImageOptions options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //将options转成成员变量
+        options = ImageLoaderUtils.initOptions();
+
         //初始化控件
         findView();
         //判断输入的是否是手机号码如果是就往下执行不是就吐司
@@ -56,8 +78,110 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         //判断登录按钮的颜色
         denglu();
+        qq();
     }
-    
+
+    private void qq() {
+        my_qq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                youMengQQ();
+            }
+
+
+        });
+
+        my_fenxiang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                youmengFenxiang();
+            }
+        });
+    }
+
+    //第三方分享
+    private void youmengFenxiang() {
+        new ShareAction(MainActivity.this).setPlatform(SHARE_MEDIA.QQ)
+                .withText("hello")
+                .setCallback(umShareListener)
+                .share();
+    }
+
+    //第三方分享
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Log.d("plat", "platform" + platform);
+
+            Toast.makeText(MainActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(MainActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if (t != null) {
+                Log.d("throw", "throw:" + t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(MainActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    //第三方登录
+    private void youMengQQ() {
+        UMShareAPI mShareAPI = UMShareAPI.get(MainActivity.this);
+        //  mShareAPI.doOauthVerify(UmDengluActivity.this, SHARE_MEDIA.QQ, umAuthListener);
+        mShareAPI.getPlatformInfo(MainActivity.this, SHARE_MEDIA.QQ, umAuthListener);
+
+    }
+
+    //第三方登录
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            Set<String> set = data.keySet();
+            for (String string : set) {
+                Log.i("msg",
+                        "============================Map=========================");
+                Log.i("msg", string + "::::" + data.get(string));
+                String str = data.get(string);
+                // 设置头像
+                if (string.equals("profile_image_url")) {
+                    ImageLoader.getInstance().displayImage(str,
+                            my_img_qq, options);
+
+                }
+                // 设置昵称
+                if (string.equals("screen_name")) {
+                    my_tv_qq.setText(str);
+                }
+
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText(getApplicationContext(), "Authorize fail", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            Toast.makeText(getApplicationContext(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    //第三方需要的回回调
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
 
     //判断手机号
     private void panDuan() {
@@ -150,15 +274,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void afterTextChanged(Editable editable) {
 
                 if (editable.length() == 0) {
+
                     my_img_detele.setVisibility(View.GONE);
                     my_tv_dl.setBackgroundColor(Color.rgb(202, 202, 197));
-
+                    //设置按钮不能点击
+                    my_tv_dl.setClickable(false);
                 } else {
                     my_img_detele.setVisibility(View.VISIBLE);
                     String phonenumber = my_ed_phonenumber.getText().toString();
                     int length = phonenumber.length();
+                    //如果有内容设置按钮可以单击获得点击事件
                     if (length > 0) {
+                        //设置按钮的颜色为黄色
                         my_tv_dl.setBackgroundColor(Color.rgb(251, 203, 61));
+                        //设置按钮能点击
+                        my_tv_dl.setClickable(true);
+
                     }
                 }
             }
@@ -187,16 +318,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         my_img_zhuce = (ImageView) findViewById(R.id.my_img_zhuce);
         my_img_chear = (ImageView) findViewById(R.id.my_img_chear);
         my_img_detele = (ImageView) findViewById(R.id.my_img_detele);
+        back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         my_img_chear.setOnClickListener(this);
         my_img_detele.setOnClickListener(this);
         my_qq = (ImageView) findViewById(R.id.my_qq);
-        my_qq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,DiSanFangActivity.class);
-                startActivity(intent);
-            }
-        });
+        my_img_weixin = (ImageView) findViewById(R.id.my_img_weixin);
+        my_fenxiang = (ImageView) findViewById(R.id.my_fenxiang);
+        my_img_qq = (ImageView) findViewById(R.id.my_img_qq);
+        my_tv_qq = (TextView) findViewById(R.id.my_tv_qq);
+
     }
 
     /**
@@ -217,4 +353,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return number.matches(num);
         }
     }
+
+
 }
