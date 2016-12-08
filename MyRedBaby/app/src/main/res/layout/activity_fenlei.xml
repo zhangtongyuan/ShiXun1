@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            >
+            <EditText
+                android:id="@+id/editext"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:hint="Who"
+                android:drawableLeft="@mipmap/icon_search_home"
+                android:background="#d0d0d0"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="#5bbb"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_line"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#F2F2F2"
+                >
+            </android.support.v7.widget.RecyclerView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_context"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="#F2F2F2"
+                >
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+
+
+
+</LinearLayout>
