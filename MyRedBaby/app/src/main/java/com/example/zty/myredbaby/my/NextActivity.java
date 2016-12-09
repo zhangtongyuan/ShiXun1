@@ -1,6 +1,7 @@
 package com.example.zty.myredbaby.my;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -28,6 +29,12 @@ public class NextActivity extends AppCompatActivity {
     private boolean flag = true;
     private long time;
     private String phone;
+    private SharedPreferences sharedPreferences;
+    private EditText next_ed_password;
+    private EditText next_ed_password1;
+    private String nextpassword;
+    private String nextpassword1;
+    private TextView mima_tv_yuyin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +44,28 @@ public class NextActivity extends AppCompatActivity {
         mima_ed_shuru = (EditText) findViewById(R.id.mima_ed_shuru);
         mima_bt_tijiao = (Button) findViewById(R.id.mima_bt_tijiao);
         mima_bt_huoqu = (Button) findViewById(R.id.mima_bt_huoqu);
+        next_ed_password = (EditText) findViewById(R.id.next_ed_password);
+        next_ed_password1 = (EditText) findViewById(R.id.next_ed_password1);
+        mima_tv_yuyin = (TextView) findViewById(R.id.mima_tv_yuyin);
+        mima_tv_yuyin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(NextActivity.this,YuYinactivity.class);
+                startActivity(intent);
+            }
+        });
         //接收注册界面传来的手机号码
         TextView mima_tv_phone = (TextView) findViewById(R.id.mima_tv_phone);
         Intent intent = getIntent();
         phone = intent.getStringExtra("phone");
         mima_tv_phone.setText("短信已发送至 :  " + phone);
+        // 获取保存对象
+        sharedPreferences = getSharedPreferences("dd", MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString("password", nextpassword);
+        edit.putString("num", phone);
+
+        edit.commit();
         //返回图片按钮
         ImageView mima_back = (ImageView) findViewById(R.id.mima_back);
         mima_back.setOnClickListener(new View.OnClickListener() {
@@ -139,16 +163,31 @@ public class NextActivity extends AppCompatActivity {
 
             }
         });
+   /*     //获取两次输入的密码
+        nextpassword = next_ed_password.getText().toString().trim();
+        nextpassword1 = next_ed_password1.getText().toString().trim();*/
         //提交按钮
         mima_bt_tijiao.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
                 String huoqu = mima_ed_shuru.getText().toString().trim();
                 if (huoqu.equals(messageNum)) {
-                    Toast.makeText(NextActivity.this, "正确", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NextActivity.this, "验证码正确", Toast.LENGTH_SHORT).show();
+
+/*
+                    if (!nextpassword.equals("") && !nextpassword1.equals("")) {
+                        if (next_ed_password.getText().toString().equals(next_ed_password1.getText().toString())) {
+                            Intent intent = new Intent(NextActivity.this, MyActivity.class);
+                            startActivity(intent);
+                        }
+                    } else {
+                        Toast.makeText(NextActivity.this, "两次输入的密码不一样！", Toast.LENGTH_SHORT).show();
+
+                    }*/
                 } else {
-                    Toast.makeText(NextActivity.this, "错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NextActivity.this, "短信验证码错误", Toast.LENGTH_SHORT).show();
 
                 }
             }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TabHost;
 
+import com.umeng.analytics.MobclickAgent;
+
 public class MainActivity extends TabActivity {
 
     @Override
@@ -66,4 +68,5 @@ public class MainActivity extends TabActivity {
 
 
     }
+
 }
