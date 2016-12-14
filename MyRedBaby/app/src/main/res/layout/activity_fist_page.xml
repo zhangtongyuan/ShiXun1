@@ -9,7 +9,6 @@
         android:layout_height="35sp"
         android:layout_alignParentTop="true"
         android:background="#FF3333"
-        android:onClick="onClick"
         android:orientation="horizontal"
         android:padding="3dp">
 
@@ -47,7 +46,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/mian_head_right"
+            android:id="@+id/mian_right"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -45,7 +45,7 @@ public class MyActivity extends AppCompatActivity implements View.OnClickListene
     private ImageView my_img_chear;
     private ImageView my_img_detele;
     private ImageView my_qq;
-    private ImageView back;
+
     private ImageView my_fenxiang;
     private ImageView my_img_weixin;
     private ImageView my_img_qq;
@@ -360,13 +360,6 @@ public class MyActivity extends AppCompatActivity implements View.OnClickListene
         my_img_zhuce = (ImageView) findViewById(R.id.my_img_zhuce);
         my_img_chear = (ImageView) findViewById(R.id.my_img_chear);
         my_img_detele = (ImageView) findViewById(R.id.my_img_detele);
-        back = (ImageView) findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
         my_img_chear.setOnClickListener(this);
         my_img_detele.setOnClickListener(this);
         my_qq = (ImageView) findViewById(R.id.my_qq);

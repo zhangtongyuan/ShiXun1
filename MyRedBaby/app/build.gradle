@@ -25,6 +25,7 @@ android {
                 keyPassword "android"
             }
         }
+
     }
     sourceSets {
         main() {
@@ -50,7 +51,6 @@ dependencies {
     //////==二维码扫描依赖库==///////
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.4@aar'
     compile 'cn.bingoogolapple:bga-zbar:1.1.4@aar'
-    compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'pub.devrel:easypermissions:0.1.7'
     compile files('libs/alipaySdk-20161009.jar')
     compile files('libs/baidumapapi_base_v4_0_0.jar')

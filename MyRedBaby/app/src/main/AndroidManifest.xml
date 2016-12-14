@@ -103,11 +103,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".BayCarActivity" />
-        <activity android:name=".FenleiActivity" />
-        <activity android:name=".FistPageActivity" />
-        <activity android:name=".MyActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".BayCarActivity"
+            android:launchMode="singleTop"
+
+            />
+        <activity
+            android:name=".FenleiActivity"
+            android:launchMode="singleTop"
+
+            />
+        <activity
+            android:name=".FistPageActivity"
+            android:launchMode="singleTop"
+
+            />
+        <activity
+            android:name=".MyActivity"
+            android:launchMode="singleInstance" />
         <activity android:name=".activity.SouSuoActivity" />
         <activity android:name=".QR.QrCodeActivity" />
         <activity android:name=".activity.WebViewActivity" />
